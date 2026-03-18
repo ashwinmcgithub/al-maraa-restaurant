@@ -156,24 +156,46 @@
       align-items: center;
       justify-content: center;
       z-index: 9999;
-      transition: opacity 0.8s ease, visibility 0.8s ease;
+      transition: opacity 1s ease, visibility 1s ease;
+      overflow: hidden;
     }
-    #loader.hidden { opacity: 0; visibility: hidden; }
-    .loader-logo {
-      font-family: var(--font-heading);
-      font-size: 2.5rem;
-      color: var(--gold);
-      letter-spacing: 0.1em;
-      margin-bottom: 2rem;
+    #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    .loader-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.5;
+    }
+    .loader-vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(10,8,6,0.3) 0%, rgba(10,8,6,0.85) 80%);
+    }
+    .loader-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .loader-logo-img {
+      width: 160px;
+      height: auto;
+      object-fit: contain;
       opacity: 0;
-      animation: fadeInUp 0.8s 0.3s forwards;
+      animation: fadeInUp 0.9s 0.3s forwards;
+      filter: drop-shadow(0 4px 20px rgba(201,165,90,0.4));
     }
     .loader-bar {
-      width: 200px;
+      width: 160px;
       height: 1px;
-      background: var(--dark-3);
+      background: rgba(201,165,90,0.15);
       position: relative;
       overflow: hidden;
+      border-radius: 4px;
     }
     .loader-bar::after {
       content: '';
@@ -183,15 +205,15 @@
       width: 100%;
       height: 100%;
       background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      animation: loaderSlide 1.5s 0.5s ease forwards;
+      animation: loaderSlide 1.8s 0.6s ease forwards;
     }
     @keyframes loaderSlide {
-      0% { left: -100%; }
+      0%   { left: -100%; }
       100% { left: 100%; }
     }
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     /* ==============================
@@ -740,11 +762,28 @@
     }
     .menu-item {
       background: var(--dark);
-      padding: 2rem;
+      padding: 0;
       position: relative;
       transition: all 0.3s ease;
       cursor: default;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .menu-item-img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+      flex-shrink: 0;
+    }
+    .menu-item:hover .menu-item-img { transform: scale(1.04); }
+    .menu-item-body {
+      padding: 1.4rem 1.6rem 1.6rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
     }
     .menu-item::before {
       content: '';
@@ -1369,8 +1408,14 @@
 
   <!-- Loading Screen -->
   <div id="loader">
-    <div class="loader-logo">Al Maraa</div>
-    <div class="loader-bar"></div>
+    <video class="loader-video" autoplay muted playsinline preload="auto" id="introVideo">
+      <source src="Video-182.mp4" type="video/mp4">
+    </video>
+    <div class="loader-vignette"></div>
+    <div class="loader-content">
+      <img src="al maraa logo.jpg" alt="Al Maraa Restaurant" class="loader-logo-img">
+      <div class="loader-bar"></div>
+    </div>
   </div>
 
   <!-- Mobile Nav Overlay -->
@@ -1395,17 +1440,15 @@
 
   <!-- Navbar -->
   <header id="navbar">
-    <div class="nav-logo">
-      <span class="en">Al Maraa</span>
-      <span class="ar">Arabian Restaurant</span>
-    </div>
+    <a href="#hero" class="nav-logo">
+      <img src="al maraa logo.jpg" alt="Al Maraa Restaurant" style="height:44px;width:auto;object-fit:contain;display:block;filter:brightness(1.1);">
+    </a>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#menu">Menu</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#gallery">Gallery</a></li>
       <li><a href="#location">Location</a></li>
-      <li class="nav-cta-wrap"><a href="#location" class="nav-cta">Reserve a Table</a></li>
     </ul>
     <button class="hamburger" onclick="openNav()" aria-label="Open Menu">
       <span></span><span></span><span></span>
@@ -1587,52 +1630,70 @@
       <div class="menu-category active" id="cat-mandi">
         <div class="menu-grid">
           <div class="menu-item">
-            <div class="menu-special-badge">Chef<br>Pick</div>
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Chicken Mandi</h3>
-              <span class="menu-item-price">₹299</span>
+            <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=600&q=80" alt="Chicken Mandi" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-special-badge">Chef<br>Pick</div>
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Chicken Mandi</h3>
+                <span class="menu-item-price">₹299</span>
+              </div>
+              <p class="menu-item-desc">Whole chicken slow-roasted in a sealed underground pit with saffron, cardamom, and dried lemon. Served on a bed of fragrant basmati rice.</p>
+              <span class="menu-item-tag">House Special</span>
             </div>
-            <p class="menu-item-desc">Whole chicken slow-roasted in a sealed underground pit with saffron, cardamom, and dried lemon. Served on a bed of fragrant basmati rice.</p>
-            <span class="menu-item-tag">House Special</span>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Mutton Mandi</h3>
-              <span class="menu-item-price">₹399</span>
+            <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80" alt="Mutton Mandi" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Mutton Mandi</h3>
+                <span class="menu-item-price">₹399</span>
+              </div>
+              <p class="menu-item-desc">Tender mutton on-the-bone, marinated in authentic Arabian spice blend, slow-smoked for hours. Deeply aromatic, melt-in-mouth texture.</p>
+              <span class="menu-item-tag">Premium Cut</span>
             </div>
-            <p class="menu-item-desc">Tender mutton on-the-bone, marinated in authentic Arabian spice blend, slow-smoked for hours. Deeply aromatic, melt-in-mouth texture.</p>
-            <span class="menu-item-tag">Premium Cut</span>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Beef Mandi</h3>
-              <span class="menu-item-price">₹349</span>
+            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80" alt="Beef Mandi" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Beef Mandi</h3>
+                <span class="menu-item-price">₹349</span>
+              </div>
+              <p class="menu-item-desc">Slow-cooked beef with a blend of Gulf spices, served on smoked rice with raita and salsa on the side.</p>
+              <span class="menu-item-tag">Gulf Style</span>
             </div>
-            <p class="menu-item-desc">Slow-cooked beef with a blend of Gulf spices, served on smoked rice with raita and salsa on the side.</p>
-            <span class="menu-item-tag">Gulf Style</span>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Half Chicken Mandi</h3>
-              <span class="menu-item-price">₹199</span>
+            <img src="https://images.unsplash.com/photo-1598103442097-8b74394b95c3?w=600&q=80" alt="Half Chicken Mandi" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Half Chicken Mandi</h3>
+                <span class="menu-item-price">₹199</span>
+              </div>
+              <p class="menu-item-desc">A generous half portion of our signature Mandi chicken with aromatic basmati. Perfect for solo dining.</p>
             </div>
-            <p class="menu-item-desc">A generous half portion of our signature Mandi chicken with aromatic basmati. Perfect for solo dining.</p>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Family Mandi Platter</h3>
-              <span class="menu-item-price">₹999</span>
+            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&q=80" alt="Family Mandi Platter" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Family Mandi Platter</h3>
+                <span class="menu-item-price">₹999</span>
+              </div>
+              <p class="menu-item-desc">The ultimate sharing experience — a whole chicken, mutton, and a generous mound of Mandi rice. Feeds 4-5 persons.</p>
+              <span class="menu-item-tag">For 4–5 Pax</span>
             </div>
-            <p class="menu-item-desc">The ultimate sharing experience — a whole chicken, mutton, and a generous mound of Mandi rice. Feeds 4-5 persons.</p>
-            <span class="menu-item-tag">For 4–5 Pax</span>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Madhooth (Buried Lamb)</h3>
-              <span class="menu-item-price">₹449</span>
+            <img src="https://images.unsplash.com/photo-1544025162-d76538f80d6e?w=600&q=80" alt="Madhooth" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Madhooth (Buried Lamb)</h3>
+                <span class="menu-item-price">₹449</span>
+              </div>
+              <p class="menu-item-desc">Ancient Yemeni technique — whole lamb buried in hot embers, cooking slowly overnight. The most authentic Gulf dining experience.</p>
+              <span class="menu-item-tag">Traditional</span>
             </div>
-            <p class="menu-item-desc">Ancient Yemeni technique — whole lamb buried in hot embers, cooking slowly overnight. The most authentic Gulf dining experience.</p>
-            <span class="menu-item-tag">Traditional</span>
           </div>
         </div>
       </div>
@@ -1641,43 +1702,58 @@
       <div class="menu-category" id="cat-shawarma">
         <div class="menu-grid">
           <div class="menu-item">
-            <div class="menu-special-badge">Best<br>Seller</div>
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Chicken Shawarma</h3>
-              <span class="menu-item-price">₹80</span>
+            <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&q=80" alt="Chicken Shawarma" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-special-badge">Best<br>Seller</div>
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Chicken Shawarma</h3>
+                <span class="menu-item-price">₹80</span>
+              </div>
+              <p class="menu-item-desc">Marinated chicken layers slow-roasted on a vertical spit, served in fresh Arabic bread with garlic sauce, pickles, and fresh vegetables.</p>
+              <span class="menu-item-tag">Most Popular</span>
             </div>
-            <p class="menu-item-desc">Marinated chicken layers slow-roasted on a vertical spit, served in fresh Arabic bread with garlic sauce, pickles, and fresh vegetables.</p>
-            <span class="menu-item-tag">Most Popular</span>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Beef Shawarma</h3>
-              <span class="menu-item-price">₹100</span>
+            <img src="https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=600&q=80" alt="Beef Shawarma" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Beef Shawarma</h3>
+                <span class="menu-item-price">₹100</span>
+              </div>
+              <p class="menu-item-desc">Premium beef marinated with a blend of 12 spices, spit-roasted and wrapped in warm Arabic flatbread with tahini and hot sauce.</p>
+              <span class="menu-item-tag">Premium</span>
             </div>
-            <p class="menu-item-desc">Premium beef marinated with a blend of 12 spices, spit-roasted and wrapped in warm Arabic flatbread with tahini and hot sauce.</p>
-            <span class="menu-item-tag">Premium</span>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Mixed Shawarma</h3>
-              <span class="menu-item-price">₹120</span>
+            <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=600&q=80" alt="Mixed Shawarma" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Mixed Shawarma</h3>
+                <span class="menu-item-price">₹120</span>
+              </div>
+              <p class="menu-item-desc">The best of both worlds — chicken and beef combined in one wrap with special house sauce, fresh greens, and pickled turnip.</p>
             </div>
-            <p class="menu-item-desc">The best of both worlds — chicken and beef combined in one wrap with special house sauce, fresh greens, and pickled turnip.</p>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Shawarma Plate</h3>
-              <span class="menu-item-price">₹180</span>
+            <img src="https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=600&q=80" alt="Shawarma Plate" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Shawarma Plate</h3>
+                <span class="menu-item-price">₹180</span>
+              </div>
+              <p class="menu-item-desc">Deconstructed shawarma served as a plate — sliced meat over vermicelli rice with hummus, salad, and Arabic bread on the side.</p>
+              <span class="menu-item-tag">Plated Style</span>
             </div>
-            <p class="menu-item-desc">Deconstructed shawarma served as a plate — sliced meat over vermicelli rice with hummus, salad, and Arabic bread on the side.</p>
-            <span class="menu-item-tag">Plated Style</span>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Shawarma Fries Box</h3>
-              <span class="menu-item-price">₹149</span>
+            <img src="https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?w=600&q=80" alt="Shawarma Fries" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Shawarma Fries Box</h3>
+                <span class="menu-item-price">₹149</span>
+              </div>
+              <p class="menu-item-desc">Crispy fries topped with shredded Shawarma chicken, garlic mayo, and chili sauce. A fusion street food experience.</p>
             </div>
-            <p class="menu-item-desc">Crispy fries topped with shredded Shawarma chicken, garlic mayo, and chili sauce. A fusion street food experience.</p>
           </div>
         </div>
       </div>
@@ -1686,44 +1762,59 @@
       <div class="menu-category" id="cat-grills">
         <div class="menu-grid">
           <div class="menu-item">
-            <div class="menu-special-badge">Flame<br>Grilled</div>
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Al-Fahm (Grilled Chicken)</h3>
-              <span class="menu-item-price">₹249</span>
+            <img src="https://images.unsplash.com/photo-1598515213692-b1f6e4df6f5d?w=600&q=80" alt="Al-Fahm Grilled Chicken" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-special-badge">Flame<br>Grilled</div>
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Al-Fahm (Grilled Chicken)</h3>
+                <span class="menu-item-price">₹249</span>
+              </div>
+              <p class="menu-item-desc">Arabic-style charcoal grilled chicken, marinated overnight in black pepper, lemon, and herbs. Crispy outside, juicy inside.</p>
+              <span class="menu-item-tag">Charcoal Grilled</span>
             </div>
-            <p class="menu-item-desc">Arabic-style charcoal grilled chicken, marinated overnight in black pepper, lemon, and herbs. Crispy outside, juicy inside.</p>
-            <span class="menu-item-tag">Charcoal Grilled</span>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Seekh Kebab</h3>
-              <span class="menu-item-price">₹199</span>
+            <img src="https://images.unsplash.com/photo-1574484284002-952d92456975?w=600&q=80" alt="Seekh Kebab" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Seekh Kebab</h3>
+                <span class="menu-item-price">₹199</span>
+              </div>
+              <p class="menu-item-desc">Minced meat skewers blended with ginger, garlic, coriander, and aromatic spices, grilled over live coals.</p>
             </div>
-            <p class="menu-item-desc">Minced meat skewers blended with ginger, garlic, coriander, and aromatic spices, grilled over live coals.</p>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Shish Taouk</h3>
-              <span class="menu-item-price">₹229</span>
+            <img src="https://images.unsplash.com/photo-1555244162-803834f70033?w=600&q=80" alt="Shish Taouk" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Shish Taouk</h3>
+                <span class="menu-item-price">₹229</span>
+              </div>
+              <p class="menu-item-desc">Tender chicken cubes marinated in yogurt, lemon, and Arabian spices, threaded on skewers and char-grilled to perfection.</p>
+              <span class="menu-item-tag">Lebanese Style</span>
             </div>
-            <p class="menu-item-desc">Tender chicken cubes marinated in yogurt, lemon, and Arabian spices, threaded on skewers and char-grilled to perfection.</p>
-            <span class="menu-item-tag">Lebanese Style</span>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Mixed Grill Platter</h3>
-              <span class="menu-item-price">₹599</span>
+            <img src="https://images.unsplash.com/photo-1544025162-d76538f80d6e?w=600&q=80" alt="Mixed Grill Platter" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Mixed Grill Platter</h3>
+                <span class="menu-item-price">₹599</span>
+              </div>
+              <p class="menu-item-desc">The grand grill selection — Seekh Kebab, Shish Taouk, Lamb Chops, and Al-Fahm, served on a sizzling platter with sides.</p>
+              <span class="menu-item-tag">For 2–3 Pax</span>
             </div>
-            <p class="menu-item-desc">The grand grill selection — Seekh Kebab, Shish Taouk, Lamb Chops, and Al-Fahm, served on a sizzling platter with sides.</p>
-            <span class="menu-item-tag">For 2–3 Pax</span>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Lamb Chops</h3>
-              <span class="menu-item-price">₹349</span>
+            <img src="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=600&q=80" alt="Lamb Chops" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Lamb Chops</h3>
+                <span class="menu-item-price">₹349</span>
+              </div>
+              <p class="menu-item-desc">Juicy lamb chops marinated in a bold Gulf spice rub, grilled to a perfect medium with mint chutney and Arabic salad.</p>
+              <span class="menu-item-tag">Premium</span>
             </div>
-            <p class="menu-item-desc">Juicy lamb chops marinated in a bold Gulf spice rub, grilled to a perfect medium with mint chutney and Arabic salad.</p>
-            <span class="menu-item-tag">Premium</span>
           </div>
         </div>
       </div>
@@ -1732,35 +1823,47 @@
       <div class="menu-category" id="cat-rice">
         <div class="menu-grid">
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Kabsa</h3>
-              <span class="menu-item-price">₹279</span>
+            <img src="https://images.unsplash.com/photo-1536304929831-ee1ca9d44906?w=600&q=80" alt="Kabsa" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Kabsa</h3>
+                <span class="menu-item-price">₹279</span>
+              </div>
+              <p class="menu-item-desc">Saudi Arabia's national dish — long-grain basmati cooked with chicken broth, saffron, dried fruits, and mixed Gulf spices.</p>
+              <span class="menu-item-tag">Saudi Classic</span>
             </div>
-            <p class="menu-item-desc">Saudi Arabia's national dish — long-grain basmati cooked with chicken broth, saffron, dried fruits, and mixed Gulf spices.</p>
-            <span class="menu-item-tag">Saudi Classic</span>
           </div>
           <div class="menu-item">
-            <div class="menu-special-badge">New</div>
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Machboos</h3>
-              <span class="menu-item-price">₹299</span>
+            <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?w=600&q=80" alt="Machboos" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-special-badge">New</div>
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Machboos</h3>
+                <span class="menu-item-price">₹299</span>
+              </div>
+              <p class="menu-item-desc">Bahraini spiced rice dish cooked with tender chicken or meat, dried limes, and a proprietary spice blend. Rich, layered flavors.</p>
+              <span class="menu-item-tag">Bahraini Style</span>
             </div>
-            <p class="menu-item-desc">Bahraini spiced rice dish cooked with tender chicken or meat, dried limes, and a proprietary spice blend. Rich, layered flavors.</p>
-            <span class="menu-item-tag">Bahraini Style</span>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Arabian Biryani</h3>
-              <span class="menu-item-price">₹249</span>
+            <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80" alt="Arabian Biryani" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Arabian Biryani</h3>
+                <span class="menu-item-price">₹249</span>
+              </div>
+              <p class="menu-item-desc">Our fusion of Indian Biryani technique with Gulf spice profiles — fragrant, layered, and served with raita and pickle.</p>
             </div>
-            <p class="menu-item-desc">Our fusion of Indian Biryani technique with Gulf spice profiles — fragrant, layered, and served with raita and pickle.</p>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Mandi Rice (Plain)</h3>
-              <span class="menu-item-price">₹99</span>
+            <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=600&q=80" alt="Mandi Rice" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Mandi Rice (Plain)</h3>
+                <span class="menu-item-price">₹99</span>
+              </div>
+              <p class="menu-item-desc">The perfectly smoked Mandi rice on its own — ideal as a side with any grill or shawarma.</p>
             </div>
-            <p class="menu-item-desc">The perfectly smoked Mandi rice on its own — ideal as a side with any grill or shawarma.</p>
           </div>
         </div>
       </div>
@@ -1769,40 +1872,55 @@
       <div class="menu-category" id="cat-starters">
         <div class="menu-grid">
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Hummus</h3>
-              <span class="menu-item-price">₹99</span>
+            <img src="https://images.unsplash.com/photo-1577805947697-89e18249d767?w=600&q=80" alt="Hummus" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Hummus</h3>
+                <span class="menu-item-price">₹99</span>
+              </div>
+              <p class="menu-item-desc">Classic creamy hummus topped with olive oil, paprika, and pine nuts. Served with warm Arabic flatbread.</p>
             </div>
-            <p class="menu-item-desc">Classic creamy hummus topped with olive oil, paprika, and pine nuts. Served with warm Arabic flatbread.</p>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Fattoush Salad</h3>
-              <span class="menu-item-price">₹119</span>
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80" alt="Fattoush Salad" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Fattoush Salad</h3>
+                <span class="menu-item-price">₹119</span>
+              </div>
+              <p class="menu-item-desc">Crispy pita chips, fresh vegetables, pomegranate seeds, and sumac dressing. Light, tangy, and refreshing.</p>
             </div>
-            <p class="menu-item-desc">Crispy pita chips, fresh vegetables, pomegranate seeds, and sumac dressing. Light, tangy, and refreshing.</p>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Kibbeh</h3>
-              <span class="menu-item-price">₹149</span>
+            <img src="https://images.unsplash.com/photo-1606471191009-63994c53433b?w=600&q=80" alt="Kibbeh" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Kibbeh</h3>
+                <span class="menu-item-price">₹149</span>
+              </div>
+              <p class="menu-item-desc">Deep-fried bulgur wheat shells stuffed with minced meat, pine nuts, and spices. A Levantine classic.</p>
+              <span class="menu-item-tag">Lebanese</span>
             </div>
-            <p class="menu-item-desc">Deep-fried bulgur wheat shells stuffed with minced meat, pine nuts, and spices. A Levantine classic.</p>
-            <span class="menu-item-tag">Lebanese</span>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Tabbouleh</h3>
-              <span class="menu-item-price">₹109</span>
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80" alt="Tabbouleh" class="menu-item-img" style="filter:hue-rotate(30deg) saturate(1.2);">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Tabbouleh</h3>
+                <span class="menu-item-price">₹109</span>
+              </div>
+              <p class="menu-item-desc">Fresh parsley, tomato, bulgur, and lemon dressing — a vibrant, herbaceous Arabian salad.</p>
             </div>
-            <p class="menu-item-desc">Fresh parsley, tomato, bulgur, and lemon dressing — a vibrant, herbaceous Arabian salad.</p>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Mutabbaq</h3>
-              <span class="menu-item-price">₹129</span>
+            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80" alt="Mutabbaq" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Mutabbaq</h3>
+                <span class="menu-item-price">₹129</span>
+              </div>
+              <p class="menu-item-desc">Crispy stuffed pancake filled with minced meat, eggs, and spring onions. A popular Gulf street snack, now elevated.</p>
             </div>
-            <p class="menu-item-desc">Crispy stuffed pancake filled with minced meat, eggs, and spring onions. A popular Gulf street snack, now elevated.</p>
           </div>
         </div>
       </div>
@@ -1811,49 +1929,67 @@
       <div class="menu-category" id="cat-drinks">
         <div class="menu-grid">
           <div class="menu-item">
-            <div class="menu-special-badge">Must<br>Try</div>
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Jallab</h3>
-              <span class="menu-item-price">₹79</span>
+            <img src="https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=600&q=80" alt="Jallab" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-special-badge">Must<br>Try</div>
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Jallab</h3>
+                <span class="menu-item-price">₹79</span>
+              </div>
+              <p class="menu-item-desc">A sweet Syrian drink made from grape juice, rose water, and tamarind, served with ice, pine nuts, and raisins.</p>
+              <span class="menu-item-tag">Arabian Specialty</span>
             </div>
-            <p class="menu-item-desc">A sweet Syrian drink made from grape juice, rose water, and tamarind, served with ice, pine nuts, and raisins.</p>
-            <span class="menu-item-tag">Arabian Specialty</span>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Arabic Coffee (Qahwa)</h3>
-              <span class="menu-item-price">₹59</span>
+            <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&q=80" alt="Arabic Coffee" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Arabic Coffee (Qahwa)</h3>
+                <span class="menu-item-price">₹59</span>
+              </div>
+              <p class="menu-item-desc">Light green coffee brewed with cardamom, saffron, and cloves. Served in a traditional dallah pot. An Arabian tradition.</p>
+              <span class="menu-item-tag">Traditional</span>
             </div>
-            <p class="menu-item-desc">Light green coffee brewed with cardamom, saffron, and cloves. Served in a traditional dallah pot. An Arabian tradition.</p>
-            <span class="menu-item-tag">Traditional</span>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Laban</h3>
-              <span class="menu-item-price">₹49</span>
+            <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600&q=80" alt="Laban" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Laban</h3>
+                <span class="menu-item-price">₹49</span>
+              </div>
+              <p class="menu-item-desc">Chilled, salted yoghurt drink — a natural digestive and the perfect complement to rich Mandi dishes.</p>
             </div>
-            <p class="menu-item-desc">Chilled, salted yoghurt drink — a natural digestive and the perfect complement to rich Mandi dishes.</p>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Fresh Fruit Juice</h3>
-              <span class="menu-item-price">₹69</span>
+            <img src="https://images.unsplash.com/photo-1589733955941-5eeaf752f6dd?w=600&q=80" alt="Fresh Fruit Juice" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Fresh Fruit Juice</h3>
+                <span class="menu-item-price">₹69</span>
+              </div>
+              <p class="menu-item-desc">Seasonal fresh fruit juices — Mango, Watermelon, Pineapple, or Mixed. Prepared fresh to order.</p>
             </div>
-            <p class="menu-item-desc">Seasonal fresh fruit juices — Mango, Watermelon, Pineapple, or Mixed. Prepared fresh to order.</p>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Mint Lemonade</h3>
-              <span class="menu-item-price">₹69</span>
+            <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=600&q=80" alt="Mint Lemonade" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Mint Lemonade</h3>
+                <span class="menu-item-price">₹69</span>
+              </div>
+              <p class="menu-item-desc">A Lebanese classic — fresh lemon, crushed mint, sugar, and ice blended into a refreshing drink.</p>
             </div>
-            <p class="menu-item-desc">A Lebanese classic — fresh lemon, crushed mint, sugar, and ice blended into a refreshing drink.</p>
           </div>
           <div class="menu-item">
-            <div class="menu-item-header">
-              <h3 class="menu-item-name">Mango Lassi</h3>
-              <span class="menu-item-price">₹79</span>
+            <img src="https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=600&q=80" alt="Mango Lassi" class="menu-item-img">
+            <div class="menu-item-body">
+              <div class="menu-item-header">
+                <h3 class="menu-item-name">Mango Lassi</h3>
+                <span class="menu-item-price">₹79</span>
+              </div>
+              <p class="menu-item-desc">Thick, creamy mango lassi with a hint of cardamom. A crowd-pleaser for all ages.</p>
             </div>
-            <p class="menu-item-desc">Thick, creamy mango lassi with a hint of cardamom. A crowd-pleaser for all ages.</p>
           </div>
         </div>
       </div>
@@ -2132,7 +2268,7 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <div class="logo-text">Al Maraa</div>
+          <img src="al maraa logo.jpg" alt="Al Maraa Restaurant" style="height:56px;width:auto;object-fit:contain;filter:brightness(1.1);margin-bottom:0.5rem;">
           <p>Authentic Arabian cuisine at the heart of Thodupuzha's Food Street. Open every evening for an unforgettable Gulf dining experience.</p>
           <div style="width:40px; height:1px; background:var(--gold); margin-top:1.5rem; opacity:0.5;"></div>
         </div>
@@ -2178,13 +2314,28 @@
   ======================== -->
   <script>
   // ==============================
-  // LOADER
+  // LOADER — dismiss when intro video ends or after 4s max
   // ==============================
+  function dismissLoader() {
+    document.getElementById('loader').classList.add('hidden');
+    initHeroAnimations();
+  }
   window.addEventListener('load', function() {
-    setTimeout(function() {
-      document.getElementById('loader').classList.add('hidden');
-      initHeroAnimations();
-    }, 1800);
+    var vid = document.getElementById('introVideo');
+    var dismissed = false;
+    function done() {
+      if (dismissed) return;
+      dismissed = true;
+      dismissLoader();
+    }
+    if (vid) {
+      vid.addEventListener('ended', done);
+      vid.addEventListener('error', done);
+      // Safety cap: dismiss after 4 seconds regardless
+      setTimeout(done, 4000);
+    } else {
+      setTimeout(done, 2000);
+    }
   });
 
   // ==============================
