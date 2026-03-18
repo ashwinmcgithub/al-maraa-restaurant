@@ -1318,7 +1318,7 @@
       .feature-text h4 { font-size: 0.7rem; }
       .feature-text p { font-size: 0.72rem; }
 
-      /* --- Menu: 2-col compact cards --- */
+      /* --- Menu: horizontal list (image left, text right) --- */
       .menu-header { margin-bottom: 1.5rem; }
       .menu-tabs {
         flex-wrap: wrap;
@@ -1332,18 +1332,49 @@
         letter-spacing: 0.05em;
       }
       .menu-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 6px;
+        grid-template-columns: 1fr;
+        gap: 8px;
         background: transparent;
       }
-      .menu-item { border-radius: 10px !important; }
-      .menu-item-img { aspect-ratio: 1/1; }
-      .menu-item-body { padding: 0.7rem 0.8rem 0.9rem; }
-      .menu-item-name { font-size: 0.82rem; }
-      .menu-item-price { font-size: 0.8rem; }
-      .menu-item-desc { font-size: 0.7rem; line-height: 1.45; margin-top: 0.3rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-      .menu-item-tag { font-size: 0.55rem; padding: 0.15rem 0.4rem; margin-top: 0.4rem; }
-      .menu-special-badge { width: 30px; height: 30px; font-size: 0.45rem; top: 0.5rem; right: 0.5rem; }
+      .menu-item {
+        border-radius: 12px !important;
+        flex-direction: row !important;
+        align-items: stretch;
+        overflow: hidden;
+      }
+      .menu-item-img {
+        width: 110px !important;
+        height: 110px !important;
+        min-width: 110px;
+        aspect-ratio: unset !important;
+        object-fit: cover;
+        flex-shrink: 0;
+        border-radius: 0 !important;
+      }
+      .menu-item-body {
+        padding: 0.75rem 0.9rem !important;
+        flex: 1;
+        min-width: 0;
+        justify-content: center;
+      }
+      .menu-item-name { font-size: 0.88rem; }
+      .menu-item-price { font-size: 0.85rem; white-space: nowrap; }
+      .menu-item-desc {
+        font-size: 0.72rem;
+        line-height: 1.4;
+        margin-top: 0.3rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .menu-item-tag { font-size: 0.55rem; padding: 0.15rem 0.5rem; margin-top: 0.4rem; }
+      .menu-special-badge {
+        width: 28px; height: 28px;
+        font-size: 0.42rem;
+        top: 0.4rem; right: 0.4rem;
+        position: absolute;
+      }
 
       /* --- Experience: hide video, compact content --- */
       .experience-split { display: block; }
