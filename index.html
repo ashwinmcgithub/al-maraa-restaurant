@@ -2586,6 +2586,7 @@
   document.querySelectorAll('.menu-item').forEach((item, i) => {
     item.style.transitionDelay = (i % 6 * 60) + 'ms';
     item.classList.add('reveal');
+    revealObserver.observe(item);
   });
 
   // Gallery items stagger
