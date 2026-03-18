@@ -1417,13 +1417,13 @@
       }
       .menu-tab {
         flex: 1 1 30%;
-        font-size: 0.6rem;
-        padding: 0.5rem 0.4rem;
+        font-size: 0.62rem;
+        padding: 0.55rem 0.4rem;
         letter-spacing: 0.05em;
       }
       .menu-grid {
         grid-template-columns: 1fr;
-        gap: 8px;
+        gap: 10px;
         background: transparent;
       }
       .menu-item {
@@ -1431,34 +1431,45 @@
         flex-direction: row !important;
         align-items: stretch;
         overflow: hidden;
+        min-height: 120px;
       }
       .menu-item-img {
-        width: 110px !important;
-        height: 110px !important;
-        min-width: 110px;
+        width: 120px !important;
+        height: 120px !important;
+        min-width: 120px;
         aspect-ratio: unset !important;
         object-fit: cover;
         flex-shrink: 0;
         border-radius: 0 !important;
+        align-self: stretch;
+        height: 100% !important;
       }
       .menu-item-body {
-        padding: 0.75rem 0.9rem !important;
+        padding: 0.8rem 1rem !important;
         flex: 1;
         min-width: 0;
+        display: flex;
+        flex-direction: column;
         justify-content: center;
+        gap: 0.2rem;
       }
-      .menu-item-name { font-size: 0.88rem; }
-      .menu-item-price { font-size: 0.85rem; white-space: nowrap; }
+      .menu-item-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.15rem;
+      }
+      .menu-item-name { font-size: 0.95rem; line-height: 1.25; }
+      .menu-item-price { font-size: 0.88rem; white-space: nowrap; }
       .menu-item-desc {
-        font-size: 0.72rem;
-        line-height: 1.4;
-        margin-top: 0.3rem;
+        font-size: 0.75rem;
+        line-height: 1.45;
+        margin-top: 0.25rem;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
       }
-      .menu-item-tag { font-size: 0.55rem; padding: 0.15rem 0.5rem; margin-top: 0.4rem; }
+      .menu-item-tag { font-size: 0.58rem; padding: 0.15rem 0.5rem; margin-top: 0.3rem; }
       .menu-special-badge {
         width: 28px; height: 28px;
         font-size: 0.42rem;
