@@ -327,8 +327,12 @@
       position: relative;
       z-index: 10;
       text-align: center;
-      max-width: 900px;
-      padding: 2rem;
+      max-width: 860px;
+      width: 100%;
+      /* top pad clears the fixed navbar; bottom pad clears scroll indicator */
+      padding: 7rem 2rem 6rem;
+      /* prevent any overflow from pushing content off */
+      box-sizing: border-box;
     }
     .hero-tagline {
       font-family: var(--font-body);
@@ -337,15 +341,15 @@
       letter-spacing: 0.4em;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.2rem;
       opacity: 0;
       transform: translateY(20px);
     }
     .hero-title {
       font-family: var(--font-heading);
-      font-size: clamp(3rem, 9vw, 7.5rem);
+      font-size: clamp(2.6rem, 7vw, 6.5rem);
       font-weight: 700;
-      line-height: 0.95;
+      line-height: 1;
       color: var(--cream);
       margin-bottom: 0.3rem;
       opacity: 0;
@@ -353,30 +357,31 @@
     }
     .hero-title .arabic-name {
       font-family: var(--font-serif);
-      font-size: clamp(1.5rem, 4vw, 3rem);
+      font-size: clamp(1.2rem, 3vw, 2.5rem);
       font-weight: 300;
       color: var(--gold);
       display: block;
       letter-spacing: 0.15em;
       font-style: italic;
+      margin-top: 0.4rem;
     }
     .hero-description {
       font-family: var(--font-serif);
-      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      font-size: clamp(1rem, 2vw, 1.25rem);
       color: var(--cream-dim);
       font-weight: 300;
-      margin: 1.5rem auto;
-      max-width: 600px;
+      margin: 1.2rem auto 0;
+      max-width: 560px;
       line-height: 1.7;
       opacity: 0;
       transform: translateY(20px);
     }
     .hero-actions {
       display: flex;
-      gap: 1.2rem;
+      gap: 1rem;
       justify-content: center;
       flex-wrap: wrap;
-      margin-top: 2.5rem;
+      margin-top: 2rem;
       opacity: 0;
       transform: translateY(20px);
     }
@@ -421,7 +426,7 @@
     }
     .hero-scroll {
       position: absolute;
-      bottom: 2rem;
+      bottom: 1.5rem;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
@@ -429,15 +434,17 @@
       align-items: center;
       gap: 0.5rem;
       color: var(--text-muted);
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       letter-spacing: 0.3em;
       text-transform: uppercase;
       z-index: 10;
       opacity: 0;
+      /* stay clear of stats on the right */
+      margin-right: 120px;
     }
     .scroll-line {
       width: 1px;
-      height: 50px;
+      height: 40px;
       background: linear-gradient(180deg, var(--gold), transparent);
       animation: scrollPulse 2s ease infinite;
     }
@@ -447,28 +454,34 @@
     }
     .hero-stats {
       position: absolute;
-      bottom: 3rem;
-      right: 3rem;
+      bottom: 2rem;
+      right: 2.5rem;
       display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
+      flex-direction: row;
+      gap: 2.5rem;
       z-index: 10;
       opacity: 0;
+      background: rgba(10,8,6,0.5);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
     }
     .stat-item {
-      text-align: right;
+      text-align: center;
     }
     .stat-number {
       font-family: var(--font-heading);
-      font-size: 2rem;
+      font-size: 1.8rem;
       color: var(--gold);
       line-height: 1;
     }
     .stat-label {
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--text-muted);
+      margin-top: 0.2rem;
     }
 
     /* Steam particles */
@@ -1257,32 +1270,98 @@
     /* ==============================
        RESPONSIVE
     ============================== */
+
+    /* --- Tablet landscape / small desktop (≤1280px) --- */
+    @media (max-width: 1280px) {
+      .container { padding: 0 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      .footer-grid { gap: 2.5rem; }
+    }
+
+    /* --- Tablet (≤1024px) --- */
     @media (max-width: 1024px) {
       .about-grid { grid-template-columns: 1fr; gap: 3rem; }
       .about-content { padding-left: 0; }
       .footer-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
       .experience-split { grid-template-columns: 1fr; }
-      .experience-visual { height: 350px; }
-      .experience-visual-overlay { background: linear-gradient(180deg, transparent 60%, var(--dark)); }
+      .experience-visual { height: 400px; }
+      .experience-visual-overlay {
+        background: linear-gradient(180deg, transparent 50%, var(--dark));
+      }
+      .experience-content { border-radius: 0 0 20px 20px !important; border-left: 1px solid var(--border) !important; }
       .location-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-scroll { margin-right: 0; }
     }
+
+    /* --- Mobile (≤768px) --- */
     @media (max-width: 768px) {
+      /* Nav */
       .nav-links, .nav-cta-wrap { display: none; }
       .hamburger { display: flex; }
+      #navbar { padding: 1rem 1.25rem; }
+
+      /* Hero */
+      #hero { min-height: 100svh; }
+      .hero-content { padding: 5.5rem 1.25rem 7rem; }
       .hero-stats { display: none; }
-      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-      .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 1; }
-      .menu-tabs { flex-wrap: wrap; }
+      .hero-scroll { margin-right: 0; bottom: 1.2rem; }
+
+      /* Sections */
+      #about, #menu, #experience, #gallery, #location { padding: 4rem 0; }
+      .container { padding: 0 1.25rem; }
+
+      /* About */
+      .about-features { grid-template-columns: 1fr 1fr; gap: 1rem; }
+      .about-badge { bottom: -1rem; right: -0.5rem; }
+
+      /* Menu */
+      .menu-tabs { flex-wrap: wrap; border-radius: 12px !important; }
+      .menu-tab { flex: 1 1 auto; min-width: 80px; font-size: 0.65rem; padding: 0.6rem 0.8rem; }
+      .menu-tab:first-child { border-radius: 12px 0 0 0 !important; }
+      .menu-tab:last-child  { border-radius: 0 0 12px 0 !important; }
+      .menu-grid { grid-template-columns: 1fr; gap: 1px; }
+      .menu-item { border-radius: 0 !important; }
+      .menu-grid .menu-item:first-child { border-radius: 0 !important; }
+
+      /* Experience */
+      .experience-visual { height: 300px; }
+      .experience-content { padding: 2.5rem 1.5rem; }
+
+      /* Gallery */
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px !important;
+      }
+      /* Reset featured tile on mobile — just a normal 2-col span */
+      .gallery-item:nth-child(1) {
+        grid-column: span 2 !important;
+        grid-row: span 1 !important;
+        aspect-ratio: 16/9;
+      }
+
+      /* Footer */
       .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
-      #about, #menu, #experience, #gallery, #location { padding: 5rem 0; }
-      .experience-content { padding: 3rem 2rem; }
-      .about-features { grid-template-columns: 1fr; }
     }
+
+    /* --- Small mobile (≤480px) --- */
     @media (max-width: 480px) {
-      .menu-grid { grid-template-columns: 1fr; }
-      .hero-actions { flex-direction: column; align-items: center; }
-      .btn-primary, .btn-secondary { width: 100%; text-align: center; }
-      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero-content { padding: 5rem 1rem 6.5rem; }
+      .hero-actions { flex-direction: column; align-items: center; gap: 0.75rem; }
+      .btn-primary, .btn-secondary { width: 100%; max-width: 260px; text-align: center; }
+      .about-features { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; gap: 4px !important; }
+      .contact-items { gap: 1.2rem; }
+      .map-container iframe { height: 300px; }
+      .hours-display { padding: 1rem; }
+      .footer-grid { gap: 1.5rem; }
+      .section-title { font-size: clamp(1.7rem, 8vw, 2.5rem); }
+    }
+
+    /* --- Very small (≤360px) --- */
+    @media (max-width: 360px) {
+      .hero-title { font-size: 2.2rem; }
+      .menu-tab { font-size: 0.6rem; padding: 0.5rem 0.5rem; }
+      .btn-primary, .btn-secondary { max-width: 100%; }
     }
   </style>
 </head>
