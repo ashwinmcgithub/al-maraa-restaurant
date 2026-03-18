@@ -2234,7 +2234,12 @@
        SCRIPTS
   ======================== -->
   <script>
-  window.addEventListener('load', initHeroAnimations);
+  // Call immediately — no loader means load event may already have fired
+  if (document.readyState === 'complete') {
+    initHeroAnimations();
+  } else {
+    window.addEventListener('load', initHeroAnimations);
+  }
 
   // ==============================
   // NAVBAR SCROLL
