@@ -1408,10 +1408,6 @@
 
   <!-- Loading Screen -->
   <div id="loader">
-    <video class="loader-video" autoplay muted playsinline preload="auto" id="introVideo">
-      <source src="leading csreen video.mp4" type="video/mp4">
-    </video>
-    <div class="loader-vignette"></div>
     <div class="loader-content">
       <img src="al maraa logo.jpg" alt="Al Maraa Restaurant" class="loader-logo-img">
       <div class="loader-bar"></div>
@@ -2314,28 +2310,13 @@
   ======================== -->
   <script>
   // ==============================
-  // LOADER — dismiss when intro video ends or after 4s max
+  // LOADER
   // ==============================
-  function dismissLoader() {
-    document.getElementById('loader').classList.add('hidden');
-    initHeroAnimations();
-  }
   window.addEventListener('load', function() {
-    var vid = document.getElementById('introVideo');
-    var dismissed = false;
-    function done() {
-      if (dismissed) return;
-      dismissed = true;
-      dismissLoader();
-    }
-    if (vid) {
-      vid.addEventListener('ended', done);
-      vid.addEventListener('error', done);
-      // Safety cap: dismiss after 4 seconds regardless
-      setTimeout(done, 4000);
-    } else {
-      setTimeout(done, 2000);
-    }
+    setTimeout(function() {
+      document.getElementById('loader').classList.add('hidden');
+      initHeroAnimations();
+    }, 1800);
   });
 
   // ==============================
